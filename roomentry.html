@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Room</title>
+  <link rel="stylesheet" type="text/css" href="assets/roomentry.css">
+</head>
+<body>
+  <h1>Create or Join a Chat Room</h1>
+  <input type="text" id="username" placeholder="Enter User Name">
+  <input type="text" id="roomId" placeholder="Enter Room ID">
+  <button id="createRoom">Create Room</button>
+  <button id="joinRoom">Join Room</button>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    document.getElementById('createRoom').addEventListener('click', () => {
+      const roomId = document.getElementById('roomId').value;
+      socket.emit('createRoom', roomId);
+    });
+
+    // Join a chat room with roomId and username
+document.getElementById('joinRoom').addEventListener('click', () => {
+  const roomId = document.getElementById('roomId').value;
+  const username = document.getElementById('username').value; // Add this line
+  socket.emit('joinRoom', { roomId, username }); // Send roomId and username
+});
+
+
+    // Create a variable to keep track of usernames
+const usernames = new Set();
+
+// Function to update the list of usernames
+function updateUsernames(usernamesList) {
+  const userListElement = document.getElementById('userList');
+  userListElement.innerHTML = ''; // Clear the list
+  usernamesList.forEach((username) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = username;
+    userListElement.appendChild(listItem);
+  });
+}
+
+
+    
+    socket.on('roomCreated', (roomId) => {
+  alert(`Room created with ID: ${roomId}`);
+});
+
+socket.on('userJoined', ({ roomId, username }) => {
+  alert(`${username} joined room ${roomId}`);
+  window.location.href = `/chat?roomId=${roomId}&username=${username}`;
+  usernames.add(username); // Add username to the set
+  updateUsernames(Array.from(usernames)); // Update the list of usernames
+});
+
+
+
+    socket.on('roomExists', (roomId) => {
+      alert(`Room with ID ${roomId} already exists. Choose a different ID.`);
+    });
+
+    socket.on('roomNotFound', (roomId) => {
+      alert(`Room with ID ${roomId} not found.`);
+    });
+
+    
+  </script>
+</body>
+</html>

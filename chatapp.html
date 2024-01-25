@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link rel="stylesheet" href="assets/chatapp.css">
+</head>
+<body>
+    <header>
+        <h1>Chat Application</h1>
+    </header>
+    <main>
+        <button id="send-button1" class="btn1">Update online Status</button>
+        <div class="chat">
+            <div class="chat-messages" id="chat-messages">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Type a message">
+                <button id="send-button" class="btn2">Send</button>
+            </div>
+        </div>
+        <!-- Add this element to display the number of people -->
+        <div id="userCount">People in the chat room: </div>
+        <br>
+        <!-- Add this element to display the list of usernames -->
+        <ul id="userList"> </ul>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="assets/chatapp.js"></script>
+</body>
+</html>
